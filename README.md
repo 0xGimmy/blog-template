@@ -82,10 +82,10 @@ Output is plain static files. Deploys to Vercel, Netlify, Cloudflare Pages, GitH
 
 The design is stitched together from a few sources I read every day:
 
-- The home page is copied from **guiltygyoza**'s personal site.
-- The single-post layout is copied from **Vitalik Buterin**'s blog.
-- The about page is copied from **Arnaud**'s personal site.
-- The typography and color palette are copied from **Effie**, made by **李自然**.
+- The home page is copied from [**guiltygyoza**](https://x.com/guiltygyoza)'s personal site.
+- The single-post layout is copied from [**Vitalik Buterin**](https://x.com/VitalikButerin)'s blog.
+- The about page is copied from [**Arnaud**](https://x.com/Arnaudschenk)'s personal site.
+- The typography and color palette are copied from **Effie**, made by [**李自然**](https://x.com/nateleex).
 
 If this template ends up useful to you, go look at their work too.
 

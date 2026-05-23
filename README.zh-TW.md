@@ -82,10 +82,10 @@ npm run preview
 
 整個網站的設計，縫合自幾個我日常的資訊源：
 
-- 首頁是抄 **guiltygyoza** 的。
-- 單篇文章的佈局是抄 **Vitalik Buterin** 的。
-- 關於頁面是抄 **Arnaud** 的。
-- 字體與配色是抄李自然做的 **Effie**。
+- 首頁是抄 [**guiltygyoza**](https://x.com/guiltygyoza) 的。
+- 單篇文章的佈局是抄 [**Vitalik Buterin**](https://x.com/VitalikButerin) 的。
+- 關於頁面是抄 [**Arnaud**](https://x.com/Arnaudschenk) 的。
+- 字體與配色是抄 [**李自然**](https://x.com/nateleex) 做的 **Effie**。
 
 如果這個模板對你有用，順便去看看他們的東西。
 
