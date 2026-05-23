@@ -2,39 +2,59 @@
 
 [English](README.md) · 繁體中文
 
-[gimmy.blog](https://gimmy.blog) 在用的 Astro setup，我寫的東西都拿掉了。要看實際長相，去 [gimmy.blog](https://gimmy.blog)。
+使用 Astro 開發的雙語部落格模板。支援 Markdown/MDX 內容、亮暗主題、RSS、sitemap、結構化資料。
 
-## 跑起來
+實際範例：[gimmy.blog](https://gimmy.blog)
 
-```
+## 功能
+
+- Markdown 與 MDX 內容，依分類路由
+- 亮暗主題切換，自動偵測系統偏好
+- 單篇可選的雙語切換（EN / 中文）
+- RSS feed、sitemap、Open Graph、JSON-LD 結構化資料
+- 靜態 HTML 輸出，runtime 不包含前端框架
+- TypeScript content collections，frontmatter 帶型別
+
+## 開始使用
+
+至 [repository](https://github.com/0xGimmy/blog-template) 上方點選 **Use this template** 建立自己的版本，然後：
+
+```sh
 git clone https://github.com/<你>/<你的blog>.git
 cd <你的blog>
 npm install
 npm run dev
 ```
 
-開 `http://localhost:4321`。
+開發伺服器運行於 `http://localhost:4321`。
 
-想要自己的 GitHub repo，就先按上面那顆綠色的 "Use this template"，再 clone 你自己的版本。
+## 設定
 
-## 改成你的
+站台層級的設定集中於 [`src/config.ts`](src/config.ts)：
 
-唯一一個非改不可的檔案是 [`src/config.ts`](src/config.ts)。名字、網址、語言、社群連結、分類，都從這裡讀。
+- `SITE.url`、`SITE.title`、`SITE.description`
+- `SITE.lang` 與 `SITE.ogLocale`
+- `SITE.author` — 名字、職稱、Email
+- `SITE.social` — Twitter、GitHub、Substack、Mastodon
+- `CATEGORIES` — 分類的 key、顯示名稱與描述
 
-關於頁的自我介紹寫在 [`src/pages/about.astro`](src/pages/about.astro)。就是 Astro + HTML，想寫什麼寫什麼。
+關於頁的內容位於 [`src/pages/about.astro`](src/pages/about.astro)。
 
-`public/` 裡面換掉這幾個：
+## 靜態檔案
 
-- `avatar.png`
-- `og-default.png`（1200×630，別人在 Twitter 之類的地方分享你 blog 連結時看到的圖）
-- favicons
-- `site.webmanifest`
+`public/` 中需替換的檔案：
 
-要換字型的話，`.woff2` 檔案丟到 `public/fonts/`，然後改 [`src/styles/global.css`](src/styles/global.css) 裡的 `@font-face` 跟 `body { font-family }`。
+| 檔案 | 用途 |
+| --- | --- |
+| `avatar.png` | 關於頁頭像 |
+| `og-default.png` | 預設社群分享圖（1200×630） |
+| `favicon.ico`、`favicon-*.png`、`apple-touch-icon.png` | Favicons |
+| `site.webmanifest` | Web app manifest |
+| `fonts/*.woff2` | `src/styles/global.css` 中引用的字型 |
 
-## 寫文章
+## 撰寫文章
 
-`.md` 或 `.mdx` 檔放到 `src/content/<分類>/` 下面。資料夾名就是分類，檔名就是 URL slug。
+文章放於 `src/content/<分類>/` 下的 `.md` 或 `.mdx` 檔。資料夾名稱對應分類；檔名作為 URL slug（可由 frontmatter 的 `urlSlug` 覆寫）。
 
 ```
 src/content/
@@ -43,39 +63,43 @@ src/content/
 └── reading/
 ```
 
-新增或更名分類，改 `src/config.ts` 裡的 `CATEGORIES`，再把資料夾改成一樣的名字。
+新增或更名分類時，請編輯 `src/config.ts` 中的 `CATEGORIES`，並對齊資料夾名稱。
 
-裡面已經有四篇範例，寫之前先看那四篇。frontmatter 有什麼欄位、雙語切換怎麼用、最基本的文章長什麼樣，都在裡面。
+Frontmatter 的 schema 定義於 [`src/content.config.ts`](src/content.config.ts)。可參考範例文章：
 
-不想公開的草稿，frontmatter 寫 `draft: true` 就藏起來了。
+| 檔案 | 示範 |
+| --- | --- |
+| `welcome.mdx` | 最簡範例 |
+| `example-article.mdx` | 完整 frontmatter 參考 |
+| `bilingual-example.mdx` | 雙語切換 |
+| `example-reading.mdx` | 短篇閱讀筆記 |
 
-## 改設計
+`draft: true` 可將文章排除於列表與路由之外。
 
-三個檔案搞定大部分，動手前先看一遍。
+## 客製化設計
 
-[`src/styles/global.css`](src/styles/global.css) — 配色是最上面的 CSS 變數，`:root` 亮色、`:root.dark` 暗色。字型在 `body` 規則裡。
+- **配色** — CSS custom properties 位於 [`src/styles/global.css`](src/styles/global.css) 頂部。`:root` 為亮色主題，`:root.dark` 為暗色主題。
+- **字型** — 同一檔案內的 `body { font-family: ... }`。
+- **排版** — 首頁位於 [`src/pages/index.astro`](src/pages/index.astro)，單篇文章位於 [`src/layouts/BlogPost.astro`](src/layouts/BlogPost.astro)。
 
-[`src/pages/index.astro`](src/pages/index.astro) — 首頁排版。
+## 編譯與部署
 
-[`src/layouts/BlogPost.astro`](src/layouts/BlogPost.astro) — 單篇文章的排版。
-
-## 部署
-
-```
+```sh
 npm run build
+npm run preview
 ```
 
-輸出純靜態 HTML，Vercel、Netlify、Cloudflare Pages、GitHub Pages 都行，丟哪都可以。
+靜態輸出可部署至 Vercel、Netlify、Cloudflare Pages、GitHub Pages 或任何靜態主機。
 
-## 設計從哪來
+## 致謝
 
-整個網站的設計，縫合自幾個我日常的資訊源：
+設計參考自：
 
-- 首頁是抄 [guiltygyoza](https://x.com/guiltygyoza) 的
-- 單篇的佈局是抄 [Vitalik](https://x.com/VitalikButerin) 的
-- 關於頁面是抄 [Arnaud](https://x.com/Arnaudschenk) 的
-- 字體跟配色是抄 [李自然](https://x.com/nateleex) 做的 [Effie](https://www.effie.co/)
+- [guiltygyoza](https://x.com/guiltygyoza) — 首頁
+- [Vitalik Buterin](https://x.com/VitalikButerin) — 單篇排版
+- [Arnaud](https://x.com/Arnaudschenk) — 關於頁
+- [李自然](https://x.com/nateleex) 的 [Effie](https://www.effie.co/) — 字體與配色
 
 ## License
 
-[MIT](LICENSE)。
+[MIT](LICENSE)

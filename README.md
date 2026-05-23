@@ -2,39 +2,59 @@
 
 [English](README.md) · [繁體中文](README.zh-TW.md)
 
-The Astro setup behind [gimmy.blog](https://gimmy.blog), with my writing taken out. To see the design in use, go to [gimmy.blog](https://gimmy.blog).
+A bilingual blog template built with Astro. Markdown/MDX content, light and dark themes, RSS, sitemap, and structured data.
 
-## Run it
+Live example: [gimmy.blog](https://gimmy.blog)
 
-```
+## Features
+
+- Markdown and MDX content with category-based routing
+- Light and dark themes with system preference detection
+- Optional per-post bilingual toggle (EN / 中文)
+- RSS feed, sitemap, Open Graph tags, JSON-LD structured data
+- Static HTML output, no client-side framework runtime
+- TypeScript content collections with a typed frontmatter schema
+
+## Getting started
+
+Click **Use this template** at the top of the [repository](https://github.com/0xGimmy/blog-template) to create your own copy, then:
+
+```sh
 git clone https://github.com/<you>/<your-blog>.git
 cd <your-blog>
 npm install
 npm run dev
 ```
 
-Open `http://localhost:4321`.
+The development server runs at `http://localhost:4321`.
 
-If you want your own GitHub repo to start from, hit the green "Use this template" button up top first, then clone your copy.
+## Configuration
 
-## Make it yours
+Site-level settings are centralized in [`src/config.ts`](src/config.ts):
 
-One file you actually need to edit: [`src/config.ts`](src/config.ts). Name, URL, language, social links, categories — they all read from there.
+- `SITE.url`, `SITE.title`, `SITE.description`
+- `SITE.lang` and `SITE.ogLocale`
+- `SITE.author` — name, role, email
+- `SITE.social` — Twitter, GitHub, Substack, Mastodon
+- `CATEGORIES` — section keys, display names, and descriptions
 
-The about-page bio is in [`src/pages/about.astro`](src/pages/about.astro). Astro + HTML, write what you want.
+The about-page bio is in [`src/pages/about.astro`](src/pages/about.astro).
 
-In `public/`, replace:
+## Static assets
 
-- `avatar.png`
-- `og-default.png` (1200×630, the image people see when they share a link to your blog on Twitter and the like)
-- the favicons
-- `site.webmanifest`
+Replace the following files in `public/`:
 
-For different fonts, drop `.woff2` files into `public/fonts/`, then update the `@font-face` rules and the `body { font-family }` in [`src/styles/global.css`](src/styles/global.css).
+| File | Purpose |
+| --- | --- |
+| `avatar.png` | About-page portrait |
+| `og-default.png` | Default social-share image (1200×630) |
+| `favicon.ico`, `favicon-*.png`, `apple-touch-icon.png` | Favicons |
+| `site.webmanifest` | Web app manifest |
+| `fonts/*.woff2` | Web fonts referenced in `src/styles/global.css` |
 
 ## Writing posts
 
-Drop `.md` or `.mdx` files into `src/content/<category>/`. The folder name is the category. The filename is the URL slug.
+Posts live in `src/content/<category>/` as `.md` or `.mdx` files. The folder name maps to the category; the filename becomes the URL slug (override with `urlSlug` in frontmatter).
 
 ```
 src/content/
@@ -43,39 +63,43 @@ src/content/
 └── reading/
 ```
 
-To add or rename categories, edit `CATEGORIES` in `src/config.ts` and rename the folder to match.
+To add or rename a category, edit `CATEGORIES` in `src/config.ts` and rename the matching folder.
 
-Four example posts are already in there. Read them before writing your own — they cover the frontmatter options, the EN/中文 toggle, and what a basic post looks like.
+The frontmatter schema is defined in [`src/content.config.ts`](src/content.config.ts). Reference posts:
 
-`draft: true` in the frontmatter hides a post.
+| File | Demonstrates |
+| --- | --- |
+| `welcome.mdx` | Minimal post |
+| `example-article.mdx` | Full frontmatter reference |
+| `bilingual-example.mdx` | Bilingual toggle |
+| `example-reading.mdx` | Short reading note |
 
-## Tweaking the design
+Set `draft: true` to exclude a post from listings and routes.
 
-Three files cover most of it. Read them first.
+## Customizing the design
 
-[`src/styles/global.css`](src/styles/global.css) — colors are CSS variables at the top (`:root` for light, `:root.dark` for dark). Fonts are in the `body` rule.
+- **Colors** — CSS custom properties at the top of [`src/styles/global.css`](src/styles/global.css). Light theme on `:root`, dark theme on `:root.dark`.
+- **Typography** — the `body { font-family: ... }` rule in the same file.
+- **Layouts** — home in [`src/pages/index.astro`](src/pages/index.astro), single post in [`src/layouts/BlogPost.astro`](src/layouts/BlogPost.astro).
 
-[`src/pages/index.astro`](src/pages/index.astro) — the home page.
+## Building and deploying
 
-[`src/layouts/BlogPost.astro`](src/layouts/BlogPost.astro) — single-post layout.
-
-## Deploy
-
-```
+```sh
 npm run build
+npm run preview
 ```
 
-Static HTML output. Drop it on Vercel, Netlify, Cloudflare Pages, GitHub Pages — wherever.
+The static output deploys to Vercel, Netlify, Cloudflare Pages, GitHub Pages, or any static host.
 
-## Where the design came from
+## Credits
 
-The design is stitched together from a few people whose sites I read all the time:
+The design draws from:
 
-- Home page — [guiltygyoza](https://x.com/guiltygyoza)
-- Single-post layout — [Vitalik](https://x.com/VitalikButerin)
-- About page — [Arnaud](https://x.com/Arnaudschenk)
-- Typography and color — [Effie](https://www.effie.co/), made by [李自然](https://x.com/nateleex)
+- [guiltygyoza](https://x.com/guiltygyoza) — home page
+- [Vitalik Buterin](https://x.com/VitalikButerin) — single-post layout
+- [Arnaud](https://x.com/Arnaudschenk) — about page
+- [Effie](https://www.effie.co/) by [李自然](https://x.com/nateleex) — typography and color palette
 
 ## License
 
-[MIT](LICENSE).
+[MIT](LICENSE)
