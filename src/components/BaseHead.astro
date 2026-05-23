@@ -1,0 +1,126 @@
+---
+// Import the global.css file here so that it is included on
+// all pages through the use of the <BaseHead /> component.
+import '../styles/global.css';
+import { SITE } from '../config';
+import { SITE_TITLE, SITE_DESCRIPTION, AUTHOR } from '../consts';
+
+interface Props {
+	title: string;
+	description?: string;
+	image?: string;
+	type?: 'website' | 'article';
+	publishedDate?: Date;
+	updatedDate?: Date;
+}
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const {
+	title,
+	description = SITE_DESCRIPTION,
+	image,
+	type = 'website',
+	publishedDate,
+	updatedDate,
+} = Astro.props;
+
+const ogImage = new URL(image || SITE.defaultOgImage, Astro.site).href;
+const fullTitle = type === 'article' ? `${title} | ${SITE_TITLE}` : title;
+
+const personId = `${SITE.url.replace(/\/$/, '')}/about#person`;
+const authorUrl = `${SITE.url.replace(/\/$/, '')}/about`;
+const sameAs = [SITE.social.twitter, SITE.social.github, SITE.social.substack, SITE.social.mastodon].filter(Boolean);
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="sitemap" href="/sitemap.xml" />
+<link
+	rel="alternate"
+	type="application/rss+xml"
+	title={SITE_TITLE}
+	href={new URL('rss.xml', Astro.site)}
+/>
+<meta name="generator" content={Astro.generator} />
+
+<!-- Theme color -->
+<meta name="theme-color" content="#fcfcfc" />
+
+<!-- Font preloads. Remove or replace these if you swap the fonts in src/styles/global.css. -->
+<link rel="preload" href="/fonts/Iansui-Regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/LXGWWenKaiTC-Bold.woff2" as="font" type="font/woff2" crossorigin />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Primary Meta Tags -->
+<title>{fullTitle}</title>
+<meta name="title" content={fullTitle} />
+<meta name="description" content={description} />
+<meta name="author" content={AUTHOR} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content={SITE.ogLocale} />
+{publishedDate && <meta property="article:published_time" content={publishedDate.toISOString()} />}
+{updatedDate && <meta property="article:modified_time" content={updatedDate.toISOString()} />}
+{type === 'article' && <meta property="article:author" content={AUTHOR} />}
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalURL} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={ogImage} />
+{SITE.social.twitterHandle && <meta property="twitter:creator" content={SITE.social.twitterHandle} />}
+
+<!-- JSON-LD Structured Data -->
+{type === 'article' ? (
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "BlogPosting",
+		"mainEntityOfPage": {
+			"@type": "WebPage",
+			"@id": canonicalURL.href
+		},
+		"headline": title,
+		"description": description,
+		"url": canonicalURL.href,
+		"inLanguage": SITE.lang,
+		"author": {
+			"@type": "Person",
+			"@id": personId,
+			"name": AUTHOR,
+			"url": authorUrl,
+			...(sameAs.length && { "sameAs": sameAs })
+		},
+		...(publishedDate && { "datePublished": publishedDate.toISOString() }),
+		...(updatedDate ? { "dateModified": updatedDate.toISOString() } : publishedDate && { "dateModified": publishedDate.toISOString() }),
+		"image": ogImage,
+		"publisher": {
+			"@type": "Person",
+			"@id": personId,
+			"name": AUTHOR
+		}
+	})} />
+) : (
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		"name": SITE_TITLE,
+		"description": description,
+		"url": Astro.site?.href,
+		"inLanguage": SITE.lang
+	})} />
+)}

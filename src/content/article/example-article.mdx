@@ -1,0 +1,28 @@
+---
+title: 'Example article'
+subtitle: 'How long-form posts are structured'
+description: 'Longer-form posts go in the article category. This example shows subtitles, sections, and frontmatter options.'
+date: 2025-01-10
+draft: false
+---
+
+Articles are the long-form category. They support an optional `subtitle` field that renders centered under the title, useful for essays where the title and a one-line tagline want to read together.
+
+## Frontmatter reference
+
+Every post supports these fields (see `src/content.config.ts`):
+
+- `title` — required.
+- `subtitle` — optional, rendered under the title on article pages.
+- `description` — used for SEO / OG meta tags.
+- `date` — required, the canonical publish date.
+- `written` — optional. If set and the year differs from `date`, a small "written in YYYY" tag appears (useful for backdated posts).
+- `updatedDate` — optional. If set, appears in JSON-LD and sitemap.
+- `urlSlug` — optional. Overrides the filename-based slug.
+- `heroImage` — optional. Used as the OG image for this post.
+- `bilingual` — optional. If true, the layout adds an EN / 中文 toggle. See the bilingual example post for the markup convention.
+- `draft` — optional. If true, the post is excluded from lists and routes.
+
+## Customizing further
+
+The layout for this page is `src/layouts/BlogPost.astro`. The home page that lists posts is `src/pages/index.astro`. Both are short — read them, change them.

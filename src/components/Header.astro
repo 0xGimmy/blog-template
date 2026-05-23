@@ -1,0 +1,35 @@
+---
+import { SITE_TITLE } from "../consts";
+import ThemeSwitch from "./ThemeSwitch.astro";
+
+export interface Props {
+  hidden?: boolean;
+}
+
+const { hidden = false } = Astro.props;
+const headerNavLinks = [{ href: "/about", title: "About" }];
+
+---
+
+<header class={`flex items-center justify-between ${hidden ? 'hidden' : 'pb-10'}`}>
+  <div>
+    <a href="/" aria-label={SITE_TITLE}>
+      <div class="flex items-center justify-between">
+        <h4 class="text-content">{SITE_TITLE}</h4>
+      </div>
+    </a>
+  </div>
+  <nav class="flex items-center space-x-4 leading-5 text-content">
+    {
+      headerNavLinks.map((link) => (
+        <a
+          href={link.href}
+          class="hidden sm:block"
+        >
+          {link.title}
+        </a>
+      ))
+    }
+    <ThemeSwitch />
+  </nav>
+</header>

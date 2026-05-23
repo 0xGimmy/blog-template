@@ -1,0 +1,80 @@
+---
+import { Image } from "astro:assets";
+import avatar from "../../public/avatar.png";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE } from "../config";
+import { SITE_TITLE } from "../consts";
+
+// Edit the bio paragraphs in the <body> below to make this page yours.
+// Name and role come from src/config.ts.
+
+const personId = `${SITE.url.replace(/\/$/, "")}/about#person`;
+const sameAs = [
+  SITE.social.twitter,
+  SITE.social.github,
+  SITE.social.substack,
+  SITE.social.mastodon,
+].filter(Boolean);
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <BaseHead title={`About - ${SITE_TITLE}`} description={`About ${SITE.author.name}`} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": personId,
+      "name": SITE.author.name,
+      "url": `${SITE.url.replace(/\/$/, "")}/about`,
+      "image": `${SITE.url.replace(/\/$/, "")}/avatar.png`,
+      "description": SITE.author.role,
+      ...(sameAs.length && { "sameAs": sameAs }),
+    })} />
+  </head>
+  <body>
+    <main>
+      <Header />
+      <article>
+        <div class="items-start space-y-2">
+          <div class="flex flex-col items-center">
+            <Image
+              src={avatar}
+              alt="avatar"
+              height={192}
+              width={192}
+              class="rounded-full"
+            />
+            <h3 class="pb-2 pt-4 text-2xl font-bold leading-8 tracking-tight text-primary">
+              {SITE.author.name}
+            </h3>
+            <div class="text-gray-500 dark:text-gray-400">{SITE.author.role}</div>
+          </div>
+          <div
+            class="prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-1"
+          >
+            {/* --- Edit your bio below. Plain HTML — add links, paragraphs, etc. --- */}
+            <p>
+              Hi, I'm {SITE.author.name}. This is a short bio about who I am
+              and what I work on. Replace this paragraph with your own story.
+            </p>
+            <p>
+              I write about [topics you care about] here. Past projects include
+              [project one], [project two], and [project three]. Add links by
+              editing <code>src/pages/about.astro</code>.
+            </p>
+            <p>
+              You can find me on
+              {SITE.social.twitter && (<> <a href={SITE.social.twitter}>Twitter</a></>)}
+              {SITE.social.github && (<> and <a href={SITE.social.github}>GitHub</a></>)}.
+            </p>
+            {/* --- End editable bio --- */}
+          </div>
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>

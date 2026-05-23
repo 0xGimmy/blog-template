@@ -1,0 +1,128 @@
+---
+---
+
+<div id="lang-toggle" class="flex justify-center gap-2 text-sm pt-2 pb-1">
+  <button data-lang="en" class="lang-btn lang-active">EN</button>
+  <span class="text-grey opacity-40">·</span>
+  <button data-lang="zh" class="lang-btn">中文</button>
+</div>
+
+<style is:inline>
+  .lang-btn {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0.1rem 0.4rem;
+    color: var(--grey-color);
+    font-family: inherit;
+    font-size: inherit;
+    transition: opacity 0.2s;
+  }
+  .lang-btn:hover { opacity: 0.7; }
+  .lang-active {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+  .lang-section { display: none; }
+  .lang-section.active { display: block; }
+</style>
+
+<script is:inline>
+  function initBilingualToggle() {
+    var article = document.querySelector('article');
+    var marker = document.getElementById('zh-start');
+    if (!article || !marker) return;
+
+    var enNodes = [];
+    var zhNodes = [];
+    var reachedMarker = false;
+    var children = Array.from(article.childNodes);
+
+    for (var i = 0; i < children.length; i++) {
+      var node = children[i];
+      if (node === marker || node.id === 'zh-start') {
+        reachedMarker = true;
+        continue;
+      }
+      if (!reachedMarker) enNodes.push(node);
+      else zhNodes.push(node);
+    }
+
+    if (!reachedMarker) {
+      var nested = article.querySelector('#zh-start');
+      if (nested) {
+        enNodes = [];
+        zhNodes = [];
+        var found = false;
+        for (var j = 0; j < children.length; j++) {
+          var n = children[j];
+          if (!found && (n.id === 'zh-start' || (n.querySelector && n.querySelector('#zh-start')))) {
+            found = true;
+            continue;
+          }
+          if (!found) enNodes.push(n);
+          else zhNodes.push(n);
+        }
+        reachedMarker = found;
+      }
+    }
+
+    if (!reachedMarker) return;
+
+    if (enNodes.length && enNodes[enNodes.length - 1].tagName === 'HR') {
+      enNodes.pop();
+    }
+
+    var enDiv = document.createElement('div');
+    enDiv.className = 'lang-section active';
+    enDiv.setAttribute('data-lang-content', 'en');
+    enNodes.forEach(function(n) { enDiv.appendChild(n); });
+
+    var zhDiv = document.createElement('div');
+    zhDiv.className = 'lang-section';
+    zhDiv.setAttribute('data-lang-content', 'zh');
+    zhNodes.forEach(function(n) { zhDiv.appendChild(n); });
+
+    article.innerHTML = '';
+    article.appendChild(enDiv);
+    article.appendChild(zhDiv);
+
+    var stored = localStorage.getItem('preferred-lang');
+    var buttons = document.querySelectorAll('.lang-btn');
+
+    var h1 = document.getElementById('post-title');
+    var titleEn = h1.getAttribute('data-title-en');
+    var titleZh = h1.getAttribute('data-title-zh');
+    var sub = document.getElementById('post-subtitle');
+    var subEn = sub ? sub.getAttribute('data-subtitle-en') : null;
+    var subZh = sub ? sub.getAttribute('data-subtitle-zh') : null;
+
+    function setLang(lang) {
+      document.querySelectorAll('.lang-section').forEach(function(s) {
+        s.classList.toggle('active', s.getAttribute('data-lang-content') === lang);
+      });
+      buttons.forEach(function(b) {
+        b.classList.toggle('lang-active', b.getAttribute('data-lang') === lang);
+      });
+      if (titleZh) {
+        h1.textContent = lang === 'zh' ? titleZh : titleEn;
+      }
+      if (sub && subZh) {
+        sub.textContent = lang === 'zh' ? subZh : subEn;
+      }
+      localStorage.setItem('preferred-lang', lang);
+    }
+
+    buttons.forEach(function(b) {
+      b.addEventListener('click', function() { setLang(b.getAttribute('data-lang')); });
+    });
+
+    if (stored) setLang(stored);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBilingualToggle);
+  } else {
+    initBilingualToggle();
+  }
+</script>

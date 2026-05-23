@@ -1,0 +1,77 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import { type CollectionEntry } from "astro:content";
+import { SITE } from "../config";
+import { SITE_TITLE, SITE_DESCRIPTION, CATEGORIES } from "../consts";
+import { getCollection } from "astro:content";
+import { postPath } from "../utils/postUrl";
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+) as CollectionEntry<"blog">[];
+
+const groupedPosts = posts.reduce(
+  (groupedPosts, post) => {
+    const year = new Date(post.data.date).getFullYear();
+    if (!groupedPosts[year]) {
+      groupedPosts[year] = [];
+    }
+    groupedPosts[year].push(post);
+    return groupedPosts;
+  },
+  {} as Record<number, CollectionEntry<"blog">[]>
+);
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <main>
+      <Header />
+      <section>
+        {
+          Object.entries(groupedPosts)
+            .sort((a, b) => Number(b[0]) - Number(a[0]))
+            .map(([year, posts]) => (
+              <div class="divide-y divide-gray-300">
+                <h5 class="text-content py-4">{year}</h5>
+                <div class="divide-y divide-gray-300">
+                  {posts.map((post) => {
+                    const { date, title } = post.data;
+                    const category = post.id.split("/")[0];
+                    return (
+                      <div class="py-4">
+                           <div class="space-y-2 md:grid md:grid-cols-4 md:items-baseline md:space-y-0 mt-auto">
+                            <div class="hidden space-y-5 md:col-span-1 md:block text-base text-grey">
+                              <a href={`/${category}`}>{CATEGORIES[category]?.display || category}</a>
+                            </div>
+                            <div class="space-y-5 md:col-span-2">
+                              <h5 class="tracking-tight text-primary">
+                                <a href={`/${postPath(post)}`}>{title}</a>
+                              </h5>
+                            </div>
+
+                            <dl>
+                              <dt class="sr-only">Published on</dt>
+                              <dd class="text-base font-medium leading-6 text-grey md:text-right">
+                                <FormattedDate date={date} />
+                              </dd>
+                            </dl>
+                          </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))
+        }
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>

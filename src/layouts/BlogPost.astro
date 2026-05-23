@@ -1,0 +1,55 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import BilingualToggle from "../components/BilingualToggle.astro";
+import { SITE } from "../config";
+
+type Props = CollectionEntry<"blog">["data"];
+
+const { title, titleZh, subtitle, subtitleZh, description, date, written, updatedDate, heroImage, bilingual } = Astro.props;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      image={heroImage?.src}
+      type="article"
+      publishedDate={date}
+      updatedDate={updatedDate}
+    />
+  </head>
+
+  <body>
+    <Header hidden={true} />
+    <main>
+      <div class="mx-auto text-gray-500 max-w-3xl">
+        <div class="mb-4 py-4">
+          <h1 id="post-title" class="m-0 mb-0 leading-tight text-primary text-center" data-title-en={title} data-title-zh={titleZh}>{title}</h1>
+          {subtitle && (
+            <p id="post-subtitle" class="m-0 mt-0 text-center text-primary text-lg leading-tight" data-subtitle-en={subtitle} data-subtitle-zh={subtitleZh}>{subtitle}</p>
+          )}
+          {bilingual && <BilingualToggle />}
+          <div class="flex justify-between items-center pt-2 text-base border-t" style="border-color: var(--grey-color)">
+            <div class="text-grey">
+              <FormattedDate date={date} />
+              {written && written.getFullYear() !== date.getFullYear() && (
+                <span class="text-sm opacity-60 ml-2">written in {written.getFullYear()}</span>
+              )}
+            </div>
+            <a href="/" class="text-grey">All posts</a>
+          </div>
+        </div>
+        <article>
+          <slot />
+        </article>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

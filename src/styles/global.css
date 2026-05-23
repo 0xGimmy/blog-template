@@ -1,0 +1,266 @@
+@import "tailwindcss";
+@import "@fontsource-variable/ysabeau-office/index.css";
+@import "@fontsource-variable/ysabeau-office/wght-italic.css";
+
+:root {
+	--bg-color: #fcfcfc;
+	--primary-color: #14519e;
+	--secondary-color: #bf3f81;
+	--third-color: #f67b10;
+	--text-color: #374151;
+	--grey-color: #6b7280;
+	--quote-bg-color: rgba(223, 241, 248, 255);
+}
+
+:root.dark {
+	--bg-color: #2f3540;
+	--primary-color: #d18770;
+  --secondary-color: #9cb687;
+  --third-color: #a83e93;
+  --text-color: #ffffff;
+  --grey-color: #9ca3af;
+  --quote-bg-color: rgba(55, 65, 81, 0.15);
+}
+
+@font-face {
+  font-family: "Iansui";
+  src: url("/fonts/Iansui-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Iansui";
+  src: url("/fonts/LXGWWenKaiTC-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: "Ysabeau Office Variable", "Iansui", sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: 18px;
+  line-height: 1.5;
+  background-color: var(--bg-color);
+  font-weight: normal;
+  font-feature-settings: "ss02" 1;
+}
+
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 3em 1em;
+}
+
+/* Center images in markdown */
+main p > img:only-child {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-content {
+  color: var(--text-color);
+}
+
+.text-grey {
+  color: var(--grey-color);
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1em; 
+}
+
+h2,
+h3 {
+  font-size: 1.6rem;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+h4 {
+  font-size: 1.4rem;
+}
+
+h5 {
+  font-size: 1.2rem;
+}
+
+
+strong,
+b {
+  font-weight: 700;
+  color: var(--secondary-color)
+}
+
+em {
+  font-style: italic;
+  color: var(--third-color)
+}
+
+
+p {
+  margin-bottom: 1em;
+  color: var(--text-color);
+}
+
+a {
+  text-decoration: none;
+}
+
+article a {
+  text-decoration: underline;
+}
+
+article center {
+  margin-bottom: 1.5em;
+}
+
+article h1,
+article h2,
+article h3,
+article h4,
+article h5 {
+  color: var(--primary-color);
+}
+
+.heading-link {
+  color: var(--grey-color);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+article h1:hover .heading-link,
+article h2:hover .heading-link,
+article h3:hover .heading-link,
+article h4:hover .heading-link,
+article h5:hover .heading-link {
+  opacity: 1;
+}
+
+
+/*
+ number bullet points style 
+ */
+
+ul {
+  padding-left: 45px;
+  margin-bottom: 1em;
+
+  li {
+    list-style: outside disc;
+    margin-bottom: 0.5rem;
+  }
+}
+
+ol {
+  padding-left: 45px;
+  margin-bottom: 1em;
+
+  li {
+    list-style: outside decimal;
+    margin-bottom: 0.5rem;
+  }
+}
+
+li::marker {
+  color: var(--primary-color);
+}
+
+li {
+  margin-bottom: 0em;
+  color: var(--text-color);
+  padding-left: 0.5em;
+}
+
+
+textarea {
+  width: 100%;
+  font-size: 16px;
+}
+
+code {
+  padding: 2px 5px;
+  background-color: color-mix(in srgb, var(--grey-color) 15%, transparent);
+  border-radius: 2px;
+}
+
+pre {
+  padding: 1.5em;
+  border-radius: 8px;
+}
+
+pre > code {
+  all: unset;
+}
+
+figure,
+table,
+img {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+
+blockquote {
+  padding: 10px 20px 10px 20px;
+  margin-bottom: 1em;
+  font-size: 1em;
+  background-color: var(--quote-bg-color);
+  border-radius: 8px;
+
+  p {
+     color: var(--primary-color);
+     margin-bottom: 0px;
+     font-style: italic;
+  }
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--grey-color);
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 720px) {
+  body {
+    font-size: 18px;
+  }
+
+  main {
+    padding: 1em;
+  }
+}
+
+.sr-only {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  /* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
+  clip: rect(1px 1px 1px 1px);
+  /* maybe deprecated but we need to support legacy browsers */
+  clip: rect(1px, 1px, 1px, 1px);
+  /* modern browsers, clip-path works inwards from each corner */
+  clip-path: inset(50%);
+  /* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
+  white-space: nowrap;
+}

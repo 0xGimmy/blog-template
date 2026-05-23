@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Replace this URL with your site's domain (must match SITE.url in src/config.ts).
+Sitemap: https://example.com/sitemap.xml

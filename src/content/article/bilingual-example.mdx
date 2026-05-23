@@ -1,0 +1,28 @@
+---
+title: 'A bilingual post'
+titleZh: '雙語文章範例'
+subtitle: 'How the EN / 中文 toggle works'
+subtitleZh: '中英對照的切換方式'
+description: 'Example showing the bilingual toggle feature.'
+date: 2025-01-15
+bilingual: true
+draft: false
+---
+
+This post demonstrates the optional bilingual feature. Set `bilingual: true` in the frontmatter and a small **EN / 中文** toggle appears under the title.
+
+Write the English (or first language) version first. Then drop in a marker `<div id="zh-start"></div>` and write the Chinese (or second language) version below it. The runtime splits the article on that marker and shows one side at a time.
+
+You can also provide `titleZh` and `subtitleZh` in frontmatter — the title swaps when the toggle is clicked.
+
+The user's choice is remembered in `localStorage` under `preferred-lang`, so they see the same language on subsequent posts.
+
+<div id="zh-start"></div>
+
+這篇文章示範雙語切換功能。在 frontmatter 加入 `bilingual: true`，標題下方就會出現 **EN / 中文** 切換按鈕。
+
+先寫第一個語言的版本，接著用 `<div id="zh-start"></div>` 當作分隔，再寫第二個語言的版本。前端會以這個分隔點把內文切成兩段，使用者按按鈕時切換顯示。
+
+可以在 frontmatter 加入 `titleZh` 和 `subtitleZh`，標題會跟著切換。
+
+使用者的選擇會記在 `localStorage` 的 `preferred-lang`，下一篇文章預設會用同樣的語言。
