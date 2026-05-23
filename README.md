@@ -1,49 +1,40 @@
 # blog-template
 
-**English** · [繁體中文](README.zh-TW.md)
+[English](README.md) · [繁體中文](README.zh-TW.md)
 
-The code behind [gimmy.blog](https://gimmy.blog), without the writing. Built with Astro.
+The Astro setup behind [gimmy.blog](https://gimmy.blog), with my writing taken out. To see the design in use, go to [gimmy.blog](https://gimmy.blog).
 
-Live demo: **[gimmy.blog](https://gimmy.blog)** — what this template renders to once you fill it with your own content.
+## Run it
 
-## What's in it
-
-- Markdown / MDX posts, grouped into categories.
-- Light and dark themes.
-- An optional EN / 中文 toggle for posts you've written in two languages.
-- RSS, sitemap, OG tags, JSON-LD — the SEO basics.
-- No frontend framework at runtime. Static HTML, fast.
-
-## Get started
-
-Click the green **"Use this template"** button at the top of [this repo](https://github.com/0xGimmy/blog-template). Then:
-
-```sh
+```
 git clone https://github.com/<you>/<your-blog>.git
 cd <your-blog>
 npm install
 npm run dev
 ```
 
-Open http://localhost:4321.
+Open `http://localhost:4321`.
+
+If you want your own GitHub repo to start from, hit the green "Use this template" button up top first, then clone your copy.
 
 ## Make it yours
 
-Open [`src/config.ts`](src/config.ts). It's the only file you have to edit. Name, URL, language, social links, categories — all there.
+One file you actually need to edit: [`src/config.ts`](src/config.ts). Name, URL, language, social links, categories — they all read from there.
 
-The about-page bio lives in [`src/pages/about.astro`](src/pages/about.astro). Write whatever you want; it's just Astro + HTML.
+The about-page bio is in [`src/pages/about.astro`](src/pages/about.astro). Astro + HTML, write what you want.
 
-Swap the placeholders in `public/`:
+In `public/`, replace:
 
-- `avatar.png` — your face
-- `og-default.png` — fallback social-share image (1200×630)
-- the favicons and `site.webmanifest`
+- `avatar.png`
+- `og-default.png` (1200×630, the image people see when they share a link to your blog on Twitter and the like)
+- the favicons
+- `site.webmanifest`
 
-Want different fonts? Drop `.woff2` files into `public/fonts/` and update the `@font-face` rules in [`src/styles/global.css`](src/styles/global.css).
+For different fonts, drop `.woff2` files into `public/fonts/`, then update the `@font-face` rules and the `body { font-family }` in [`src/styles/global.css`](src/styles/global.css).
 
 ## Writing posts
 
-`.md` or `.mdx` files go under `src/content/<category>/`. The folder name is the category; the filename becomes the URL slug.
+Drop `.md` or `.mdx` files into `src/content/<category>/`. The folder name is the category. The filename is the URL slug.
 
 ```
 src/content/
@@ -52,43 +43,39 @@ src/content/
 └── reading/
 ```
 
-Rename or add categories by editing `CATEGORIES` in `src/config.ts` and renaming the folders to match.
+To add or rename categories, edit `CATEGORIES` in `src/config.ts` and rename the folder to match.
 
-Four example posts are already there — read them, they're the docs:
+Four example posts are already in there. Read them before writing your own — they cover the frontmatter options, the EN/中文 toggle, and what a basic post looks like.
 
-- `welcome.mdx` — the simplest case.
-- `example-article.mdx` — every frontmatter field explained.
-- `bilingual-example.mdx` — how the EN / 中文 toggle works.
-- `example-reading.mdx` — short reading note.
+`draft: true` in the frontmatter hides a post.
 
-Hide a draft with `draft: true` in the frontmatter.
+## Tweaking the design
 
-## Changing the design
+Three files cover most of it. Read them first.
 
-- **Colors** — CSS variables at the top of [`src/styles/global.css`](src/styles/global.css). `:root` is light, `:root.dark` is dark.
-- **Fonts** — the `body { font-family: ... }` rule in the same file.
-- **Layout** — the home grid lives in [`src/pages/index.astro`](src/pages/index.astro); single-post layout is [`src/layouts/BlogPost.astro`](src/layouts/BlogPost.astro). Both files are short. Read them before reaching for abstractions.
+[`src/styles/global.css`](src/styles/global.css) — colors are CSS variables at the top (`:root` for light, `:root.dark` for dark). Fonts are in the `body` rule.
 
-## Build and deploy
+[`src/pages/index.astro`](src/pages/index.astro) — the home page.
 
-```sh
+[`src/layouts/BlogPost.astro`](src/layouts/BlogPost.astro) — single-post layout.
+
+## Deploy
+
+```
 npm run build
-npm run preview
 ```
 
-Output is plain static files. Deploys to Vercel, Netlify, Cloudflare Pages, GitHub Pages, a $5 VPS, or your friend's old Mac mini.
+Static HTML output. Drop it on Vercel, Netlify, Cloudflare Pages, GitHub Pages — wherever.
 
-## Credits
+## Where the design came from
 
-The design is stitched together from a few sources I read every day:
+The design is stitched together from a few people whose sites I read all the time:
 
-- The home page is copied from [**guiltygyoza**](https://x.com/guiltygyoza)'s personal site.
-- The single-post layout is copied from [**Vitalik Buterin**](https://x.com/VitalikButerin)'s blog.
-- The about page is copied from [**Arnaud**](https://x.com/Arnaudschenk)'s personal site.
-- The typography and color palette are copied from **Effie**, made by [**李自然**](https://x.com/nateleex).
-
-If this template ends up useful to you, go look at their work too.
+- Home page — [guiltygyoza](https://x.com/guiltygyoza)
+- Single-post layout — [Vitalik](https://x.com/VitalikButerin)
+- About page — [Arnaud](https://x.com/Arnaudschenk)
+- Typography and color — [Effie](https://www.effie.co/), made by [李自然](https://x.com/nateleex)
 
 ## License
 
-[MIT](LICENSE). Fork it, change it, no attribution needed.
+[MIT](LICENSE).
